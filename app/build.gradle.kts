@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.malomnogo.unscrumblegame"
+    namespace = "com.malomnogo.unscramblegame"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.malomnogo.unscrumblegame"
+        applicationId = "com.malomnogo.unscramblegame"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

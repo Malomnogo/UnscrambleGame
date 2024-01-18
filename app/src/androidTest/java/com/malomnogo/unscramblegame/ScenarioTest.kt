@@ -24,8 +24,8 @@ class ScenarioTest {
             initialPage.typeText(word = it)
             initialPage.clickSubmit()
             initialPage.checkVisible(input = buffer)
-        }
 
+        }
         initialPage.typeText(word = "l")
         initialPage.checkVisible(input = "animal")
         initialPage.typeText(word = "l")
@@ -62,10 +62,9 @@ class ScenarioTest {
     }
 
     @Test
-    fun incorrectThenCorrectThenTwiceIncorrectAndCorrect() {
+    fun IncorrectThenCorrectThenTwiceIncorrectAndCorrect() {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
-        initialPage.checkVisible()
-        initialPage.replaceText(text = "abcder")
+        initialPage.replaceText(text = "abcdef")
         initialPage.clickSubmit()
         var errorPage = ErrorPage()
         errorPage.checkVisible()
@@ -74,16 +73,17 @@ class ScenarioTest {
         initialPage = InitialPage(counter = "2/2", score = "Score: 10", shuffledWord = "otua")
         initialPage.replaceText(text = "abcd")
         initialPage.clickSubmit()
+        errorPage = ErrorPage()
         errorPage.checkVisible()
-        initialPage.replaceText(text = "abce")
+        initialPage.replaceText(text = "abcw")
         initialPage.clickSubmit()
         errorPage.checkVisible()
-        initialPage.replaceText(text = "auto")
-        initialPage.clickSubmit()
+
         val gameOverPage = GameOverPage(score = "Score: 20")
         initialPage.checkNotVisible()
         gameOverPage.checkVisible()
         gameOverPage.clickRestart()
+
 
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
@@ -109,14 +109,14 @@ class ScenarioTest {
         gameOverPage.checkVisible()
         gameOverPage.clickRestart()
 
-
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
+
     }
 
     @Test
-    fun skipThenCorrect() {
+    fun skipThenCorrect{
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
         initialPage.checkVisible()
         initialPage.clickSubmit()
@@ -137,7 +137,6 @@ class ScenarioTest {
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
-
     }
 
     @Test
@@ -146,10 +145,12 @@ class ScenarioTest {
         initialPage.checkVisible()
         initialPage.typeText(word = "animal")
         initialPage.clickSubmit()
+        initialPage.checkVisible()
 
         initialPage = InitialPage(counter = "2/2", score = "Score: 20", shuffledWord = "otua")
         initialPage.checkVisible()
         initialPage.clickSkip()
+
 
         val gameOverPage = GameOverPage(score = "Score: 20")
         initialPage.checkNotVisible()
@@ -160,7 +161,6 @@ class ScenarioTest {
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
-
     }
 
     @Test
@@ -173,10 +173,10 @@ class ScenarioTest {
 
         initialPage = InitialPage(counter = "2/2", score = "Score: 0", shuffledWord = "otua")
         initialPage.checkVisible()
-        initialPage.typeText(word = "abcd")
+        initialPage.replaceText(text = "abcd")
         initialPage.clickSubmit()
 
-        val errorPage = ErrorPage()
+        var errorPage = ErrorPage()
         errorPage.checkVisible()
 
         initialPage.clickSkip()
@@ -188,9 +188,7 @@ class ScenarioTest {
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
-
     }
-
     @Test
     fun errorThenSkipThenErrorThenCorrect() {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
