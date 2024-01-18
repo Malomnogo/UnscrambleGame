@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UnscrambleGame</string>
     <string name="submit">submit</string>
     <string name="enter_your_word">Enter your word</string>
 </resources>

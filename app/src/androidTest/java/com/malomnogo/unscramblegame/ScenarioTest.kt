@@ -62,7 +62,7 @@ class ScenarioTest {
     }
 
     @Test
-    fun IncorrectThenCorrectThenTwiceIncorrectAndCorrect() {
+    fun incorrectThenCorrectThenTwiceIncorrectAndCorrect() {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
         initialPage.replaceText(text = "abcdef")
         initialPage.clickSubmit()
@@ -176,7 +176,7 @@ class ScenarioTest {
         initialPage.replaceText(text = "abcd")
         initialPage.clickSubmit()
 
-        var errorPage = ErrorPage()
+        val errorPage = ErrorPage()
         errorPage.checkVisible()
 
         initialPage.clickSkip()
@@ -256,7 +256,7 @@ class ScenarioTest {
         initialPage.replaceText(text = "abcder")
         initialPage.clickSubmit()
 
-        var errorPage = ErrorPage()
+        val errorPage = ErrorPage()
         errorPage.checkVisible()
         initialPage.replaceText(text = "animal")
         initialPage.clickSubmit()
