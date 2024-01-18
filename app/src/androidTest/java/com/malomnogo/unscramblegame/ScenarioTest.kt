@@ -116,7 +116,7 @@ class ScenarioTest {
     }
 
     @Test
-    fun skipThenCorrect{
+    fun skipThenCorrect() {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
         initialPage.checkVisible()
         initialPage.clickSubmit()
