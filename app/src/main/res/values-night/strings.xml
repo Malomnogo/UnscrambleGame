@@ -2,4 +2,7 @@
 <resources>
     <string name="submit">submit</string>
     <string name="enter_your_word">Enter your word</string>
+    <string name="error_message">wrong guess</string>
+    <string name="restart">restart</string>
+    <string name="skip">skip</string>
 </resources>

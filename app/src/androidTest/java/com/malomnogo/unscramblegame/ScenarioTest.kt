@@ -27,13 +27,12 @@ class ScenarioTest {
 
         }
         initialPage.typeText(word = "l")
-        initialPage.checkVisible(input = "animal")
+        initialPage.checkVisible(input = "animal", submitEnabled = true)
         initialPage.typeText(word = "l")
         initialPage.clickSubmit()
         initialPage.checkVisible(input = "animall")
         initialPage.replaceText(text = "animal")
         initialPage.clickSubmit()
-
 
         initialPage = InitialPage(counter = "2/2", score = "Score: 20", shuffledWord = "otua")
         initialPage.checkVisible()
@@ -48,7 +47,7 @@ class ScenarioTest {
 
         }
         initialPage.typeText(word = "o")
-        initialPage.checkVisible(input = "auto")
+        initialPage.checkVisible(input = "auto", submitEnabled = true)
         initialPage.clickSubmit()
         val gameOverPage = GameOverPage(score = "Score: 40")
         initialPage.checkNotVisible()
@@ -78,6 +77,8 @@ class ScenarioTest {
         initialPage.replaceText(text = "abcw")
         initialPage.clickSubmit()
         errorPage.checkVisible()
+        initialPage.replaceText(text = "auto")
+        initialPage.clickSubmit()
 
         val gameOverPage = GameOverPage(score = "Score: 20")
         initialPage.checkNotVisible()
@@ -112,7 +113,6 @@ class ScenarioTest {
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
-
     }
 
     @Test
@@ -133,7 +133,6 @@ class ScenarioTest {
         gameOverPage.checkVisible()
         gameOverPage.clickRestart()
 
-
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
@@ -145,18 +144,15 @@ class ScenarioTest {
         initialPage.checkVisible()
         initialPage.typeText(word = "animal")
         initialPage.clickSubmit()
-        initialPage.checkVisible()
 
         initialPage = InitialPage(counter = "2/2", score = "Score: 20", shuffledWord = "otua")
         initialPage.checkVisible()
         initialPage.clickSkip()
 
-
         val gameOverPage = GameOverPage(score = "Score: 20")
         initialPage.checkNotVisible()
         gameOverPage.checkVisible()
         gameOverPage.clickRestart()
-
 
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
@@ -189,6 +185,7 @@ class ScenarioTest {
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
     }
+
     @Test
     fun errorThenSkipThenErrorThenCorrect() {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
@@ -218,7 +215,6 @@ class ScenarioTest {
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
         initialPage.checkVisible()
-
     }
 
     @Test
@@ -250,7 +246,7 @@ class ScenarioTest {
     }
 
     @Test
-    fun incorrectThenCorrectThenSkip( ) {
+    fun incorrectThenCorrectThenSkip() {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
         initialPage.checkVisible()
         initialPage.replaceText(text = "abcder")

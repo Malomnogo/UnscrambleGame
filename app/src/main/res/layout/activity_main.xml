@@ -4,9 +4,9 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="16dp"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
     <Space
@@ -48,6 +48,7 @@
             android:id="@+id/inputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <Space
@@ -65,6 +66,5 @@
         android:id="@+id/skipButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 </LinearLayout>

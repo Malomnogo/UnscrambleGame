@@ -13,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.CoreMatchers.allOf
 
 class GameOverPage(private val score: String) {
+
     fun checkVisible() {
         onView(
             allOf(
@@ -30,6 +31,14 @@ class GameOverPage(private val score: String) {
                 withParent(isAssignableFrom(LinearLayout::class.java))
             )
         ).check(matches(withText("restart")))
+        onView(
+            allOf(
+                withId(R.id.shuffledWordTextView),
+                isAssignableFrom(TextView::class.java),
+                withParent(withId(R.id.rootLayout)),
+                withParent(isAssignableFrom(LinearLayout::class.java))
+            )
+        ).check(matches(withText("Game Over")))
     }
 
     fun clickRestart() {
