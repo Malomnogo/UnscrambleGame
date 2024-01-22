@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             uiState.show(binding)
         }
         binding.inputEditText.doAfterTextChanged {
-            uiState = viewModel.update(binding.inputEditText.text.toString())
+            val uiState = viewModel.update(binding.inputEditText.text.toString())
             uiState.show(binding)
         }
 

@@ -51,7 +51,6 @@ interface UiState : Serializable {
     ) : Abstract(counter, score, shuffleWord) {
 
         override fun show(binding: ActivityMainBinding) {
-            super.show(binding)
             with(binding) {
                 inputLayout.error = ""
                 inputLayout.isErrorEnabled = false
@@ -67,7 +66,6 @@ interface UiState : Serializable {
     ) : Abstract(counter, score, shuffleWord) {
 
         override fun show(binding: ActivityMainBinding) {
-            super.show(binding)
             with(binding) {
                 inputLayout.error = ""
                 inputLayout.isErrorEnabled = false
@@ -88,6 +86,7 @@ interface UiState : Serializable {
                 inputLayout.error = inputLayout.context.getString(R.string.error_message)
                 inputLayout.isErrorEnabled = true
                 submitButton.isEnabled = false
+                skipButton.setText(R.string.skip)
             }
         }
     }
@@ -95,6 +94,7 @@ interface UiState : Serializable {
     data class GameOver(private val score: Int) : UiState {
 
         override fun show(binding: ActivityMainBinding) = with(binding) {
+            inputEditText.setText("")
             scoreTextView.text = scoreTextView.context.getString(R.string.score, score)
             inputLayout.visibility = View.INVISIBLE
             submitButton.visibility = View.INVISIBLE

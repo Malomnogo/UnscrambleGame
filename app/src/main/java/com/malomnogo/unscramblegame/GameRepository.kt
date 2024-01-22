@@ -241,9 +241,7 @@ interface GameRepository : Score {
             next()
             permanentStorage.saveUiPosition(1)
             scoreLogic.clear()
-            if (permanentStorage.index() == allWords.size) permanentStorage.saveIndex(0) else {
-                permanentStorage.saveIndex(permanentStorage.index() + 1)
-            }
+            if (permanentStorage.index() == allWords.size) permanentStorage.saveIndex(0)
         }
     }
 }

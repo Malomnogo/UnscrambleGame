@@ -17,6 +17,7 @@ class ScenarioTest {
         var initialPage = InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "lamina")
         initialPage.checkVisible()
         initialPage.clickSubmit()
+        activityScenarioRule.scenario.recreate()
         initialPage.checkVisible()
         var buffer = ""
         "anima".forEach {
@@ -28,16 +29,20 @@ class ScenarioTest {
         }
         initialPage.typeText(word = "l")
         initialPage.checkVisible(input = "animal", submitEnabled = true)
+        activityScenarioRule.scenario.recreate()
         initialPage.typeText(word = "l")
         initialPage.clickSubmit()
         initialPage.checkVisible(input = "animall")
+        activityScenarioRule.scenario.recreate()
         initialPage.replaceText(text = "animal")
         initialPage.clickSubmit()
 
         initialPage = InitialPage(counter = "2/2", score = "Score: 20", shuffledWord = "otua")
         initialPage.checkVisible()
+        activityScenarioRule.scenario.recreate()
         initialPage.clickSubmit()
         initialPage.checkVisible()
+        activityScenarioRule.scenario.recreate()
         buffer = ""
         "aut".forEach {
             buffer += it
@@ -48,15 +53,18 @@ class ScenarioTest {
         }
         initialPage.typeText(word = "o")
         initialPage.checkVisible(input = "auto", submitEnabled = true)
+        activityScenarioRule.scenario.recreate()
         initialPage.clickSubmit()
         val gameOverPage = GameOverPage(score = "Score: 40")
         initialPage.checkNotVisible()
         gameOverPage.checkVisible()
+        activityScenarioRule.scenario.recreate()
         gameOverPage.clickRestart()
-
 
         initialPage =
             InitialPage(counter = "1/2", score = "Score: 0", shuffledWord = "anecdote".reversed())
+        initialPage.checkVisible()
+        activityScenarioRule.scenario.recreate()
         initialPage.checkVisible()
     }
 
