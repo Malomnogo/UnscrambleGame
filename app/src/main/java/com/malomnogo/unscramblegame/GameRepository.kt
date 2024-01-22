@@ -1,5 +1,7 @@
 package com.malomnogo.unscramblegame
 
+import android.content.Context
+
 interface GameRepository : Score {
 
     fun currentWordPosition(): Int
@@ -11,9 +13,10 @@ interface GameRepository : Score {
     fun restart()
 
     class Base(
+        private val permanentStorage: PermanentStorage,
         private val shuffle: Shuffle = Shuffle.Reversed(),
         private val wordsCount: Int = 2,
-        private val scoreLogic: ScoreLogic = ScoreLogic.Base(),
+        private val scoreLogic: ScoreLogic = ScoreLogic.Base(permanentStorage),
         private val allWords: List<String> = listOf(
             "animal",
             "auto",
@@ -197,11 +200,10 @@ interface GameRepository : Score {
         )
     ) : GameRepository {
 
-        private var uiPosition = 1
-        private var index = 0
+        private var shuffled = ""
 
         override fun currentWordPosition(): Int {
-            return uiPosition
+            return permanentStorage.uiPosition()
         }
 
         override fun maxWordsCount(): Int {
@@ -213,29 +215,86 @@ interface GameRepository : Score {
         }
 
         override fun shuffleWord(): String {
-            return shuffle.shuffle(allWords[index])
+            if (shuffled.isEmpty()) {
+                shuffled = shuffle.shuffle(allWords[permanentStorage.index()])
+            }
+            return shuffled
         }
 
         override fun isTextCorrect(text: String): Boolean {
-            val isCorrect = allWords[index] == text
+            val isCorrect = allWords[permanentStorage.index()] == text
             scoreLogic.calculate(isCorrect)
             return isCorrect
         }
 
         override fun isLastWord(): Boolean {
-            return uiPosition == wordsCount
+            return permanentStorage.uiPosition() == wordsCount
         }
 
         override fun next() {
-            index++
-            uiPosition++
+            shuffled = ""
+            permanentStorage.saveIndex(permanentStorage.index() + 1)
+            permanentStorage.saveUiPosition(permanentStorage.uiPosition() + 1)
         }
 
         override fun restart() {
-            uiPosition = 1
+            next()
+            permanentStorage.saveUiPosition(1)
             scoreLogic.clear()
-            index++
-            if (index == allWords.size) index = 0
+            if (permanentStorage.index() == allWords.size) permanentStorage.saveIndex(0) else {
+                permanentStorage.saveIndex(permanentStorage.index() + 1)
+            }
+        }
+    }
+}
+
+interface PermanentStorage {
+
+    fun uiPosition(): Int
+    fun index(): Int
+
+    fun saveUiPosition(position: Int)
+    fun saveIndex(index: Int)
+    fun score(): Int
+    fun saveScore(score: Int)
+    fun attempts(): Int
+    fun saveAttempts(attempts: Int)
+
+    class Base(context: Context) : PermanentStorage {
+
+        private val sharedPref =
+            context.getSharedPreferences("unscrambleData", Context.MODE_PRIVATE)
+
+        override fun uiPosition(): Int {
+            return sharedPref.getInt("position", 1)
+        }
+
+        override fun index(): Int {
+            return sharedPref.getInt("index", 0)
+        }
+
+        override fun saveUiPosition(position: Int) {
+            sharedPref.edit().putInt("position", position).apply()
+        }
+
+        override fun saveIndex(index: Int) {
+            sharedPref.edit().putInt("index", index).apply()
+        }
+
+        override fun score(): Int {
+            return sharedPref.getInt("score", 0)
+        }
+
+        override fun saveScore(score: Int) {
+            sharedPref.edit().putInt("score", score).apply()
+        }
+
+        override fun attempts(): Int {
+            return sharedPref.getInt("attempts", 0)
+        }
+
+        override fun saveAttempts(attempts: Int) {
+            sharedPref.edit().putInt("attempts", attempts).apply()
         }
     }
 }
@@ -252,31 +311,33 @@ interface ScoreLogic : Score {
     fun clear()
 
     abstract class Abstract(
-        protected var score: Int = 0,
-        protected var attempts: Int = 0
+        protected val permanentStorage: PermanentStorage
     ) : ScoreLogic {
 
         override fun score(): Int {
-            return score
+            return permanentStorage.score()
         }
 
         override fun clear() {
-            score = 0
-            attempts = 0
+            permanentStorage.saveScore(score = 0)
+            permanentStorage.saveAttempts(attempts = 0)
         }
     }
 
-    class Base : Abstract() {
+    class Base(permanentStorage: PermanentStorage) : Abstract(permanentStorage) {
 
         override fun calculate(isCorrect: Boolean) {
+            var score = permanentStorage.score()
+            var attempts = permanentStorage.attempts()
             if (isCorrect) {
                 score += 10
                 if (attempts == 0)
                     score += 10
-
                 attempts = 0
             } else
                 attempts++
+            permanentStorage.saveScore(score)
+            permanentStorage.saveAttempts(attempts)
         }
     }
 }

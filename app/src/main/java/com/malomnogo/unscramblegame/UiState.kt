@@ -2,8 +2,9 @@ package com.malomnogo.unscramblegame
 
 import android.view.View
 import com.malomnogo.unscramblegame.databinding.ActivityMainBinding
+import java.io.Serializable
 
-interface UiState {
+interface UiState : Serializable {
 
     fun show(binding: ActivityMainBinding)
 
@@ -50,10 +51,27 @@ interface UiState {
     ) : Abstract(counter, score, shuffleWord) {
 
         override fun show(binding: ActivityMainBinding) {
+            super.show(binding)
             with(binding) {
                 inputLayout.error = ""
                 inputLayout.isErrorEnabled = false
                 submitButton.isEnabled = true
+            }
+        }
+    }
+
+    data class InvalidInput(
+        private val counter: String,
+        private val score: Int,
+        private val shuffleWord: String
+    ) : Abstract(counter, score, shuffleWord) {
+
+        override fun show(binding: ActivityMainBinding) {
+            super.show(binding)
+            with(binding) {
+                inputLayout.error = ""
+                inputLayout.isErrorEnabled = false
+                submitButton.isEnabled = false
             }
         }
     }
@@ -86,20 +104,5 @@ interface UiState {
         }
 
         override fun skip(viewModel: SkipActions) = viewModel.restart()
-    }
-
-    data class InvalidInput(
-        private val counter: String,
-        private val score: Int,
-        private val shuffleWord: String
-    ) : Abstract(counter, score, shuffleWord) {
-
-        override fun show(binding: ActivityMainBinding) {
-            with(binding) {
-                inputLayout.error = ""
-                inputLayout.isErrorEnabled = false
-                submitButton.isEnabled = false
-            }
-        }
     }
 }
