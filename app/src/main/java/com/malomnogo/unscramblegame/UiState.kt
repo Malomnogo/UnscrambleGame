@@ -10,28 +10,18 @@ interface UiState : Serializable {
 
     fun skip(viewModel: SkipActions): UiState = viewModel.skip()
 
-    abstract class Abstract(
-        private val counter: String,
-        private val score: Int,
-        private val shuffleWord: String
-    ) : UiState {
-
-        override fun show(binding: ActivityMainBinding) = with(binding) {
-            counterTextView.text = counter
-            scoreTextView.text = scoreTextView.context.getString(R.string.score, score)
-            shuffledWordTextView.text = shuffleWord
-        }
-    }
 
     data class Initial(
         private val counter: String,
         private val score: Int,
         private val shuffleWord: String
-    ) : Abstract(counter, score, shuffleWord) {
+    ) : UiState {
 
         override fun show(binding: ActivityMainBinding) {
-            super.show(binding)
             with(binding) {
+                shuffledWordTextView.text = shuffleWord
+                counterTextView.text = counter
+                scoreTextView.text = scoreTextView.context.getString(R.string.score, score)
                 inputEditText.setText("")
                 inputLayout.error = ""
                 inputLayout.isErrorEnabled = false
@@ -44,11 +34,7 @@ interface UiState : Serializable {
         }
     }
 
-    data class ValidInput(
-        private val counter: String,
-        private val score: Int,
-        private val shuffleWord: String
-    ) : Abstract(counter, score, shuffleWord) {
+    object ValidInput : UiState {
 
         override fun show(binding: ActivityMainBinding) {
             with(binding) {
@@ -59,11 +45,7 @@ interface UiState : Serializable {
         }
     }
 
-    data class InvalidInput(
-        private val counter: String,
-        private val score: Int,
-        private val shuffleWord: String
-    ) : Abstract(counter, score, shuffleWord) {
+    object InvalidInput : UiState {
 
         override fun show(binding: ActivityMainBinding) {
             with(binding) {
@@ -74,14 +56,9 @@ interface UiState : Serializable {
         }
     }
 
-    data class Error(
-        private val counter: String,
-        private val score: Int,
-        private val shuffleWord: String
-    ) : Abstract(counter, score, shuffleWord) {
+    object Error : UiState {
 
         override fun show(binding: ActivityMainBinding) {
-            super.show(binding)
             with(binding) {
                 inputLayout.error = inputLayout.context.getString(R.string.error_message)
                 inputLayout.isErrorEnabled = true

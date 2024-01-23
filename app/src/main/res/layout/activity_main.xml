@@ -18,6 +18,7 @@
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:freezesText="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:text="Score" />
 
@@ -26,6 +27,7 @@
         android:id="@+id/counterTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:freezesText="true"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:text="1/2" />
@@ -34,6 +36,7 @@
         android:id="@+id/shuffledWordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:freezesText="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:text="Animal" />
 
