@@ -8,30 +8,15 @@ class GameViewModel(private val repository: GameRepository) : SkipActions {
         repository.shuffleWord()
     )
 
-    fun update(text: String) = if (text.length == repository.shuffleWord().length)
-        UiState.ValidInput(
-            "${repository.currentWordPosition()}/${repository.maxWordsCount()}",
-            repository.score(),
-            repository.shuffleWord()
-        )
-    else
-        UiState.InvalidInput(
-            "${repository.currentWordPosition()}/${repository.maxWordsCount()}",
-            repository.score(),
-            repository.shuffleWord()
-        )
+    fun update(text: String) =
+        if (text.length == repository.shuffleWord().length) UiState.ValidInput
+        else UiState.InvalidInput
 
-    fun submit(text: String) = if (repository.isTextCorrect(text))
-        skip()
-    else
-        UiState.Error(
-            "${repository.currentWordPosition()}/${repository.maxWordsCount()}",
-            repository.score(),
-            repository.shuffleWord()
-        )
+    fun submit(text: String) =
+        if (repository.isTextCorrect(text)) skip()
+        else UiState.Error
 
-    override fun skip() = if (repository.isLastWord())
-        UiState.GameOver(repository.score())
+    override fun skip() = if (repository.isLastWord()) UiState.GameOver(repository.score())
     else {
         repository.next()
         init()
