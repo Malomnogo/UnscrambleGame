@@ -58,7 +58,6 @@ class ScenarioTest {
         val gameOverPage = GameOverPage(score = "Score: 40")
         initialPage.checkNotVisible()
         gameOverPage.checkVisible()
-        activityScenarioRule.scenario.recreate()
         gameOverPage.clickRestart()
 
         initialPage =

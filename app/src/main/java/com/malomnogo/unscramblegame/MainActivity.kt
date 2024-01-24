@@ -1,49 +1,61 @@
 package com.malomnogo.unscramblegame
 
-import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doAfterTextChanged
 import com.malomnogo.unscramblegame.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var uiState: UiState
     private lateinit var viewModel: GameViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel = (application as UnscrambleApplication).viewModel()
 
         binding.submitButton.setOnClickListener {
-            uiState = viewModel.submit(binding.inputEditText.text.toString())
+            uiState = viewModel.submit(binding.input.text())
             uiState.show(binding)
         }
         binding.skipButton.setOnClickListener {
             uiState = uiState.skip(viewModel)
             uiState.show(binding)
         }
-        binding.inputEditText.doAfterTextChanged {
-            val uiState = viewModel.update(binding.inputEditText.text.toString())
+        if (savedInstanceState == null) {
+            uiState = viewModel.init()
+            uiState.show(binding)
+        }
+    }
+
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            TODO("Not yet implemented")
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            val uiState = viewModel.update(binding.input.text())
             uiState.show(binding)
         }
 
-        uiState = if (savedInstanceState == null) {
-            viewModel.init()
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                savedInstanceState.getSerializable("uiState", UiState::class.java) as UiState
-            } else {
-                savedInstanceState.getSerializable("uiState") as UiState
-            }
-        }
-        uiState.show(binding)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable("uiState", uiState)
+    override fun onResume() {
+        super.onResume()
+        binding.input.binding.inputEditText.addTextChangedListener(textWatcher)
     }
+
+    override fun onPause() {
+        super.onPause()
+        binding.input.binding.inputEditText.removeTextChangedListener(textWatcher)
+    }
+
 }

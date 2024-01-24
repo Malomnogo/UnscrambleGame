@@ -34,17 +34,10 @@ class InitialPage(
             )
         )
         if (submitEnabled) {
-            onView.check(
-                matches(
-                    (isEnabled())
-                )
-            )
+            onView.check(matches((isEnabled())))
         } else
-            onView.check(
-                matches(
-                    not(isEnabled())
-                )
-            )
+            onView.check(matches(not(isEnabled())))
+
         onView(
             allOf(
                 withId(R.id.counterTextView),
@@ -53,6 +46,7 @@ class InitialPage(
                 withParent(isAssignableFrom(LinearLayout::class.java))
             )
         ).check(matches(withText(counter)))
+
         onView(
             allOf(
                 withId(R.id.scoreTextView),
@@ -61,6 +55,7 @@ class InitialPage(
                 withParent(isAssignableFrom(LinearLayout::class.java))
             )
         ).check(matches(withText(score)))
+
         onView(
             allOf(
                 withId(R.id.shuffledWordTextView),
@@ -69,20 +64,22 @@ class InitialPage(
                 withParent(isAssignableFrom(LinearLayout::class.java))
             )
         ).check(matches(withText(shuffledWord)))
+
         onView(
             allOf(
                 withId(R.id.inputLayout),
                 isAssignableFrom(TextInputLayout::class.java),
-                withParent(withId(R.id.rootLayout)),
-                withParent(isAssignableFrom(LinearLayout::class.java))
-            )
+
+                )
         ).check(matches(InputErrorMatcher("")))
+
         onView(
             allOf(
                 withId(R.id.inputEditText),
                 isAssignableFrom(TextInputEditText::class.java)
             )
         ).check(matches(withText(input)))
+
         onView(
             allOf(
                 withId(R.id.skipButton),
@@ -159,9 +156,7 @@ class InitialPage(
         onView(
             allOf(
                 withId(R.id.inputLayout),
-                isAssignableFrom(TextInputLayout::class.java),
-                withParent(withId(R.id.rootLayout)),
-                withParent(isAssignableFrom(LinearLayout::class.java))
+                isAssignableFrom(TextInputLayout::class.java)
             )
         ).check(matches(not(isDisplayed())))
     }

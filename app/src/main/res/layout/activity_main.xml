@@ -22,7 +22,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:text="Score" />
 
-
     <TextView
         android:id="@+id/counterTextView"
         android:layout_width="match_parent"
@@ -40,26 +39,17 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:text="Animal" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputLayout"
+    <com.malomnogo.unscramblegame.Input
+        android:id="@+id/input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:hint="@string/enter_your_word">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="wrap_content" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <Button
+    <com.malomnogo.unscramblegame.SubmitButton
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,6 +58,7 @@
     <Button
         android:id="@+id/skipButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:freezesText="true" />
 
 </LinearLayout>
