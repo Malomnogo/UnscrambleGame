@@ -14,7 +14,7 @@ class MainViewModel(
             LoadScreen
         else
             GameScreen
-        navigation.update(screen)
+        navigation.navigate(screen)
     }
 
     fun startGettingUpdates(observer: Navigation) {

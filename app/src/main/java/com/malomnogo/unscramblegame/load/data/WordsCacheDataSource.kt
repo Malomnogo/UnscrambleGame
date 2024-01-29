@@ -33,13 +33,4 @@ interface WordsCacheDataSource {
             private const val KEY = "words"
         }
     }
-
-    class Fake : Mutable {
-        override fun save(words: List<String>) {
-        }
-
-        override fun words(): List<String> {
-            return listOf("animal", "blablabla")
-        }
-    }
 }

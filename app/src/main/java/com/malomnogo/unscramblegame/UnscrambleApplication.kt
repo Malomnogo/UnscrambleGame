@@ -13,6 +13,7 @@ import com.malomnogo.unscramblegame.load.data.LoadRepository
 import com.malomnogo.unscramblegame.load.data.WordsCacheDataSource
 import com.malomnogo.unscramblegame.load.data.WordsService
 import com.malomnogo.unscramblegame.load.presentation.LoadViewModel
+import com.malomnogo.unscramblegame.load.presentation.RunAsync
 import com.malomnogo.unscramblegame.load.presentation.UiObservable
 import com.malomnogo.unscramblegame.main.MainViewModel
 import com.malomnogo.unscramblegame.main.NavigationObservable
@@ -65,7 +66,6 @@ interface ProvideViewModel {
             val shuffle = if (isRelease) Shuffle.Base() else Shuffle.Reversed()
             val wordsCount = if (isRelease) 10 else 2
 
-
             return when (clasz) {
                 LoadViewModel::class.java -> {
                     val logging = HttpLoggingInterceptor()
@@ -73,38 +73,39 @@ interface ProvideViewModel {
                     val client: OkHttpClient = OkHttpClient.Builder()
                         .addInterceptor(logging)
                         .build()
-
                     val retrofit = Retrofit.Builder()
-                        .baseUrl("https://random-word-api.herokuapp.com/")
+                        .baseUrl("https://random-word-api.vercel.app/")
                         .client(client)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
+
                     LoadViewModel(
-                        LoadRepository.Base(
+                        repository = LoadRepository.Base(
                             retrofit.create(WordsService::class.java),
                             cacheDataSource,
                             screenRepository,
                             wordsCount
                         ),
-                        UiObservable.Base(),
-                        navigationObservable
+                        uiObservable = UiObservable.Base(),
+                        navigation = navigationObservable,
+                        runAsync = RunAsync.Base()
                     )
                 }
 
                 MainViewModel::class.java -> MainViewModel(
-                    screenRepository,
-                    navigationObservable
+                    repository = screenRepository,
+                    navigation = navigationObservable
                 )
 
                 GameViewModel::class.java -> GameViewModel(
-                    GameRepository.Base(
+                    repository = GameRepository.Base(
                         shuffle = shuffle,
                         wordsCount = wordsCount,
                         permanentStorage = PermanentStorage.Base(localStorage),
                         cacheDataSource = cacheDataSource
                     ),
-                    screenRepository,
-                    navigationObservable
+                    screenRepository = screenRepository,
+                    navigation = navigationObservable
                 )
 
                 else -> throw IllegalStateException()

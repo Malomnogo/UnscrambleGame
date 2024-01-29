@@ -4,13 +4,13 @@ interface UiObservable : UpdateUi, UpdateObserver {
     class Base : UiObservable {
 
         private var cache: LoadUiState = LoadUiState.Empty
-        private var observer: UiCallBack = UiCallBack.Empty
+        private var observer: UiCallback = UiCallback.Empty
         override fun updateUi(loadUiState: LoadUiState) {
             cache = loadUiState
             observer.update(cache)
         }
 
-        override fun updateObserver(observer: UiCallBack) {
+        override fun updateObserver(observer: UiCallback) {
             this.observer = observer
             observer.update(cache)
         }
@@ -22,5 +22,5 @@ interface UpdateUi {
 }
 
 interface UpdateObserver {
-    fun updateObserver(observer: UiCallBack)
+    fun updateObserver(observer: UiCallback)
 }

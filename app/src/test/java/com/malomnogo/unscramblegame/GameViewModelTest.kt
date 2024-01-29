@@ -1,5 +1,11 @@
 package com.malomnogo.unscramblegame
 
+import com.malomnogo.unscramblegame.game.GameRepository
+import com.malomnogo.unscramblegame.game.GameViewModel
+import com.malomnogo.unscramblegame.game.UiState
+import com.malomnogo.unscramblegame.main.Navigation
+import com.malomnogo.unscramblegame.main.Screen
+import com.malomnogo.unscramblegame.main.ScreenRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -9,7 +15,16 @@ class GameViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = GameViewModel(FakeRepository())
+        viewModel = GameViewModel(
+            repository = FakeRepository(),
+            screenRepository = object : ScreenRepository.Save {
+                override fun saveNewGameStarted() = Unit
+                override fun saveNeedNewGameData() = Unit
+            },
+            navigation = object : Navigation {
+                override fun navigate(screen: Screen) = Unit
+            }
+        )
     }
 
     @Test
@@ -61,7 +76,6 @@ class GameViewModelTest {
         actual = viewModel.restart()
         expected = UiState.Initial(counter = "1/2", score = 0, shuffleWord = "banana".reversed())
         assertEquals(expected, actual)
-
     }
 
     @Test
@@ -168,5 +182,4 @@ private class FakeRepository : GameRepository {
         attempts = 0
         index++
     }
-
 }

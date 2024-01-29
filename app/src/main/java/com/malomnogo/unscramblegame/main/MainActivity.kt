@@ -19,9 +19,9 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
         viewModel = viewModel(MainViewModel::class.java)
 
         navigation = object : Navigation {
-            override fun update(screen: Screen) {
+            override fun navigate(screen: Screen) {
                 screen.show(binding.container.id, supportFragmentManager)
-                viewModel.notifyScreenObserved()
+                screen.observed(viewModel)
             }
         }
 

@@ -14,7 +14,7 @@ class LoadFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: LoadViewModel
 
-    private lateinit var uiCallBack: UiCallBack
+    private lateinit var uiCallBack: UiCallback
 
 
     override fun onCreateView(
@@ -36,7 +36,7 @@ class LoadFragment : Fragment() {
         }
         viewModel.init(savedInstanceState == null)
 
-        uiCallBack = object : UiCallBack {
+        uiCallBack = object : UiCallback {
             override fun update(loadUiState: LoadUiState) {
                 loadUiState.show(binding)
             }
@@ -59,11 +59,11 @@ class LoadFragment : Fragment() {
     }
 }
 
-interface UiCallBack {
+interface UiCallback {
 
     fun update(loadUiState: LoadUiState)
 
-    object Empty : UiCallBack {
+    object Empty : UiCallback {
         override fun update(loadUiState: LoadUiState) = Unit
     }
 }

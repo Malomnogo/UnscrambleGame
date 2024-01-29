@@ -17,10 +17,9 @@ interface GameRepository : Score {
         private val shuffle: Shuffle = Shuffle.Reversed(),
         private val wordsCount: Int = 2,
         private val scoreLogic: ScoreLogic = ScoreLogic.Base(permanentStorage),
-        cacheDataSource: WordsCacheDataSource.Read
+        private val cacheDataSource: WordsCacheDataSource.Read
     ) : GameRepository {
 
-        private val allWords: List<String> = cacheDataSource.words()
 
         private var shuffled = ""
         override fun currentWordPosition() = permanentStorage.uiPosition()
@@ -28,13 +27,13 @@ interface GameRepository : Score {
         override fun score() = scoreLogic.score()
         override fun shuffleWord(): String {
             if (shuffled.isEmpty()) {
-                shuffled = shuffle.shuffle(allWords[permanentStorage.index()])
+                shuffled = shuffle.shuffle(cacheDataSource.words()[permanentStorage.index()])
             }
             return shuffled
         }
 
         override fun isTextCorrect(text: String): Boolean {
-            val isCorrect = allWords[permanentStorage.index()] == text
+            val isCorrect = cacheDataSource.words()[permanentStorage.index()] == text
             scoreLogic.calculate(isCorrect)
             return isCorrect
         }
@@ -50,7 +49,9 @@ interface GameRepository : Score {
             next()
             permanentStorage.saveUiPosition(1)
             scoreLogic.clear()
-            if (permanentStorage.index() == allWords.size) permanentStorage.saveIndex(index = 0)
+            if (permanentStorage.index() == cacheDataSource.words().size) permanentStorage.saveIndex(
+                index = 0
+            )
         }
     }
 }

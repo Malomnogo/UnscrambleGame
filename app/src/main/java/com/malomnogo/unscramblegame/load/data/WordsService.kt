@@ -5,6 +5,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WordsService {
-    @GET("word")
-    fun load(@Query("number") number: Int = 10) : Call<List<String>>
+
+    //https://random-word-api.vercel.app/api?words=10
+    @GET("api")
+    fun load(@Query("words") number: Int = 10) : Call<List<String>>
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 
 interface Screen {
     fun show(id: Int, supportFragmentManager: FragmentManager)
+    fun observed(viewModel: MainViewModel) = viewModel.notifyScreenObserved()
 
     abstract class Replace(private val clasz: Class<out Fragment>) : Screen {
         override fun show(id: Int, supportFragmentManager: FragmentManager) {
@@ -16,5 +17,6 @@ interface Screen {
 
     object Empty : Screen {
         override fun show(id: Int, supportFragmentManager: FragmentManager) = Unit
+        override fun observed(viewModel: MainViewModel) = Unit
     }
 }

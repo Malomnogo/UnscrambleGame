@@ -11,14 +11,14 @@ interface NavigationObservable : Navigation, UpdateNavigationObserver {
            cache = Screen.Empty
         }
 
-        override fun update(screen: Screen) {
+        override fun navigate(screen: Screen) {
             cache = screen
-            observer.update(screen)
+            observer.navigate(screen)
         }
 
         override fun updateNavigateObserver(observer: Navigation) {
             this.observer = observer
-            observer.update(cache)
+            observer.navigate(cache)
         }
 
     }
@@ -26,10 +26,10 @@ interface NavigationObservable : Navigation, UpdateNavigationObserver {
 
 interface Navigation {
 
-    fun update(screen: Screen)
+    fun navigate(screen: Screen)
 
     object Empty : Navigation {
-        override fun update(screen: Screen) = Unit
+        override fun navigate(screen: Screen) = Unit
     }
 }
 
