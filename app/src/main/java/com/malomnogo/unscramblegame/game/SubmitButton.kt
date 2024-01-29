@@ -1,14 +1,15 @@
-package com.malomnogo.unscramblegame
+package com.malomnogo.unscramblegame.game
 
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
+import com.google.android.material.button.MaterialButton
 
-class SubmitButton : androidx.appcompat.widget.AppCompatButton {
-
+class SubmitButton : MaterialButton {
     constructor(context: Context) : super(context)
+
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
         context,
@@ -16,8 +17,8 @@ class SubmitButton : androidx.appcompat.widget.AppCompatButton {
         defStyleAttr
     )
 
-    override fun onSaveInstanceState(): Parcelable? {
-        return super.onSaveInstanceState()?.let {
+    override fun onSaveInstanceState(): Parcelable {
+        super.onSaveInstanceState().let {
             val state = SubmitButtonSavedState(it)
             state.save(this)
             return state
@@ -33,29 +34,29 @@ class SubmitButton : androidx.appcompat.widget.AppCompatButton {
 
 class SubmitButtonSavedState : View.BaseSavedState {
 
-    private var isEnabled = true
+    private var isEnable: Boolean = true
     private var visibility = View.VISIBLE
 
     constructor(superState: Parcelable) : super(superState)
 
     private constructor(parcelIn: Parcel) : super(parcelIn) {
-        isEnabled = parcelIn.readByte() == 1.toByte()
+        isEnable = parcelIn.readByte() == 1.toByte()
         visibility = parcelIn.readInt()
     }
 
     fun restore(button: SubmitButton) {
         button.visibility = visibility
-        button.isEnabled = isEnabled
+        button.isEnabled = isEnable
     }
 
     fun save(button: SubmitButton) {
         visibility = button.visibility
-        isEnabled = button.isEnabled
+        isEnable = button.isEnabled
     }
 
     override fun writeToParcel(out: Parcel, flags: Int) {
         super.writeToParcel(out, flags)
-        out.writeByte(if (isEnabled) 1 else 0)
+        out.writeByte(if (isEnable) 1 else 0)
         out.writeInt(visibility)
     }
 

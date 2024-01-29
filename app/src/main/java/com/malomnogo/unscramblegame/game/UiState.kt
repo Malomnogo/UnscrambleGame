@@ -1,11 +1,12 @@
-package com.malomnogo.unscramblegame
+package com.malomnogo.unscramblegame.game
 
 import android.view.View
-import com.malomnogo.unscramblegame.databinding.ActivityMainBinding
+import com.malomnogo.unscramblegame.R
+import com.malomnogo.unscramblegame.databinding.FragmentGameBinding
 import java.io.Serializable
 
 interface UiState : Serializable {
-    fun show(binding: ActivityMainBinding)
+    fun show(binding: FragmentGameBinding)
     fun skip(viewModel: SkipActions): UiState = viewModel.skip()
 
     data class Initial(
@@ -13,13 +14,12 @@ interface UiState : Serializable {
         private val score: Int,
         private val shuffleWord: String
     ) : UiState {
-        override fun show(binding: ActivityMainBinding) {
+        override fun show(binding: FragmentGameBinding) {
             with(binding) {
                 scoreTextView.text = scoreTextView.context.getString(R.string.score, score)
                 counterTextView.text = counter
                 input.show()
                 shuffledWordTextView.text = shuffleWord
-                submitButton.isEnabled = false
                 submitButton.visibility = View.VISIBLE
                 counterTextView.visibility = View.VISIBLE
                 skipButton.setText(R.string.skip)
@@ -28,7 +28,7 @@ interface UiState : Serializable {
     }
 
     object Error : UiState {
-        override fun show(binding: ActivityMainBinding) {
+        override fun show(binding: FragmentGameBinding) {
             with(binding) {
                 input.showError()
                 submitButton.isEnabled = false
@@ -38,7 +38,7 @@ interface UiState : Serializable {
     }
 
     object ValidInput : UiState {
-        override fun show(binding: ActivityMainBinding) {
+        override fun show(binding: FragmentGameBinding) {
             with(binding) {
                 submitButton.isEnabled = true
                 input.clearError()
@@ -48,7 +48,7 @@ interface UiState : Serializable {
     }
 
     object InvalidInput : UiState {
-        override fun show(binding: ActivityMainBinding) {
+        override fun show(binding: FragmentGameBinding) {
             with(binding) {
                 input.clearError()
                 submitButton.isEnabled = false
@@ -57,8 +57,12 @@ interface UiState : Serializable {
         }
     }
 
+    object Empty : UiState {
+        override fun show(binding: FragmentGameBinding) = Unit
+    }
+
     data class GameOver(private val score: Int) : UiState {
-        override fun show(binding: ActivityMainBinding) = with(binding) {
+        override fun show(binding: FragmentGameBinding) = with(binding) {
             input.hide()
             scoreTextView.text = scoreTextView.context.getString(R.string.score, score)
             submitButton.visibility = View.INVISIBLE

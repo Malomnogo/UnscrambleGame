@@ -1,19 +1,18 @@
-package com.malomnogo.unscramblegame
+package com.malomnogo.unscramblegame.game
 
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.Editable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import androidx.core.widget.doAfterTextChanged
+import com.malomnogo.unscramblegame.R
 import com.malomnogo.unscramblegame.databinding.InputBinding
 
 class Input : FrameLayout {
 
-    val binding: InputBinding
+    val binding: InputBinding = InputBinding.inflate(LayoutInflater.from(context), this, true)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -22,10 +21,6 @@ class Input : FrameLayout {
         attrs,
         defStyleAttr
     )
-
-    init {
-        binding = InputBinding.inflate(LayoutInflater.from(context), this, true)
-    }
 
     fun showError() = with(binding) {
         inputLayout.error = inputLayout.context.getString(R.string.error_message)
@@ -43,19 +38,13 @@ class Input : FrameLayout {
     }
 
     fun show() = with(binding) {
-        clearError()
         inputEditText.setText("")
+        inputLayout.error = ""
+        inputLayout.isErrorEnabled = false
         inputLayout.visibility = View.VISIBLE
     }
 
     fun text() = binding.inputEditText.text.toString()
-
-    fun doAfterTextChanged(action: (Editable?) -> Unit) {
-        binding.inputEditText.doAfterTextChanged(
-            action
-        )
-    }
-
 
     override fun onSaveInstanceState(): Parcelable? {
         return super.onSaveInstanceState()?.let {
@@ -70,8 +59,6 @@ class Input : FrameLayout {
         super.onRestoreInstanceState(restoredState.superState)
         restoredState.restore(binding)
     }
-
-
 }
 
 class InputSavedState : View.BaseSavedState {
